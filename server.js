@@ -12,22 +12,28 @@ app.use(cors());
 app.use(express.static('public'))
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/images');
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-  }
-});
+    destination: (req, file, cb) => {
+      cb(null, 'public/images');
+    },
+    filename: (req, file, cb) => {
+      const index = req.params.id; 
+      const ext = path.extname(file.originalname); 
+      const filename = `${index}${ext}`; 
+      cb(null, filename); 
+    }
+  });
 
-const modelStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/model');
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-  }
-});
+  const modelStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'public/model');
+    },
+    filename: (req, file, cb) => {
+      const index = req.params.id; 
+      const ext = path.extname(file.originalname); 
+      const filename = `${index}${ext}`; 
+      cb(null, filename);
+    }
+  });
 
 const upload = multer({
   storage: storage
